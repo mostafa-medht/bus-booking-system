@@ -21,8 +21,9 @@ class TripStationSeeder extends Seeder
 
         // Define the stations for the trip
         $stations = [
-            ['station_id' => 3, 'stop_order' => 1],
-            ['station_id' => 4, 'stop_order' => 2],
+            ['station_id' => 2, 'stop_order' => 1],
+            ['station_id' => 3, 'stop_order' => 2],
+            ['station_id' => 4, 'stop_order' => 3],
         ];
 
         // Loop through each station and create a new TripStation record
