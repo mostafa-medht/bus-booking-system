@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Seat;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -46,10 +47,6 @@ class SeatSeeder extends Seeder
             ],
             [
                 'number' => 9,
-                'bus_id' => 1,
-            ],
-            [
-                'number' => 10,
                 'bus_id' => 1,
             ],
             [
@@ -113,5 +110,8 @@ class SeatSeeder extends Seeder
             ],
             // Add more seats here
         ];
+
+        foreach ($seats as $seat)
+            Seat::create($seat);
     }
 }
