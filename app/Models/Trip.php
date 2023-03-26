@@ -21,7 +21,10 @@ class Trip extends Model
 
     public function intermediateStations()
     {
-        return $this->belongsToMany(Station::class, 'trip_stations');
+        return $this->belongsToMany(Station::class, 'trip_stations')
+            ->withTimestamps()
+            ->withPivot('stop_order')
+            ->orderBy('stop_order');
     }
 
     public function buses()
