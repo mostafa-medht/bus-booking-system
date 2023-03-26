@@ -15,10 +15,12 @@ class BusSeeder extends Seeder
     {
         $buses = [
             [
-                'name' => 'Bus 1',
+                'bus_name' => 'Bus 1',
+                'trip_id' => 1
             ],
             [
-                'name' => 'Bus 2',
+                'bus_name' => 'Bus 2',
+                'trip_id' => 2
             ],
             // Add more buses here
         ];

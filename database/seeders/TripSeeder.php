@@ -15,14 +15,14 @@ class TripSeeder extends Seeder
     {
         $trips = [
             [
+                'name' => 'cairo-assuit',
                 'start_station_id' => 1,
                 'end_station_id' => 5,
-                'bus_id' => 1,
             ],
             [
+                'name' => 'cairo-almniya',
                 'start_station_id' => 1,
                 'end_station_id' => 3,
-                'bus_id' => 2,
             ],
             // Add more trips here
         ];
