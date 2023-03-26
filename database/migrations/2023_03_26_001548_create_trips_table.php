@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('seats', function (Blueprint $table) {
+        Schema::create('trips', function (Blueprint $table) {
             $table->id();
-            $table->integer('number');
+            $table->string('name');
+            $table->unsignedBigInteger('start_station_id');
+            $table->unsignedBigInteger('end_station_id');
 
-            $table->foreignId('bus_id')->constrained();
-
-            $table->boolean('booked')->default(0);
             $table->timestamps();
+
+            $table->foreign('start_station_id')->references('id')->on('stations');
+            $table->foreign('end_station_id')->references('id')->on('stations');
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('seats');
+        Schema::dropIfExists('trips');
     }
 };
