@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\Seat;
 use App\Models\Trip;
 use App\Models\TripStation;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -16,35 +18,16 @@ class BookingServices
             $startStationId = $validateData['start_station_id'];
             $endStationId = $validateData['end_station_id'];
 
-            $getAvailableStations = TripStation::query()
-                ->whereIn('station_id', [$startStationId, $endStationId])
-                ->pluck('trip_id')->toArray();
-//            dd(array_unique($getAvailableStations));
-            $tripSeats = Trip::with(['buses:id,bus_name,trip_id', 'buses.seats' => function($query){
-                $query->where('is_booked', '=', 0);
-            }])
-            ->whereIn('id', array_unique($getAvailableStations))
-            ->select(['id', 'name', 'start_station_id', 'end_station_id'])
-            ->get();
+            $getAvailableTripsIds = $this->getAvailableTripsIds($startStationId, $endStationId);
 
-            dd($tripSeats);
-            $allAvailableSeats = [];
+            $tripSeats = $this->getTripBasedOnAvailableTripsIds($getAvailableTripsIds);
 
-            foreach ($tripSeats->buses as $bus){
-                foreach ($bus->seats as $seat){
-                    $allAvailableSeats [] = (object) [
-                        'trip_id' => $bus->trip_id,
-                        'seat_id' => $seat->id,
-                        'seat_number' => $seat->number,
-                        'bus_id' => $seat->bus_id
-                    ];
-                }
-            }
+            $allAvailableSeats = $this->getCustomizedSeatDataPreview($tripSeats);
 
             return ['status' => true, 'data' => $allAvailableSeats];
 
         }catch (\Throwable $exception){
-            Log::error("Get All Available Seats: Can not get available seats for trip with id {$tripId}, ".$exception->getMessage());
+            Log::error("Get All Available Seats: Can not get available seats, ".$exception->getMessage());
 
             return ['status' => false];
         }
@@ -81,5 +64,55 @@ class BookingServices
     {
         $seat->is_booked = true;
         $seat->save();
+    }
+
+    /**
+     * @param int $startStationId
+     * @param int $endStationId
+     * @return mixed[]
+     */
+    public function getAvailableTripsIds(int $startStationId, int $endStationId): array
+    {
+        return TripStation::query()
+            ->whereIn('station_id', [$startStationId, $endStationId])
+            ->pluck('trip_id')->toArray();
+    }
+
+    /**
+     * @param array $getAvailableTripsIds
+     * @return Builder[]|Collection
+     */
+    public function getTripBasedOnAvailableTripsIds(array $getAvailableTripsIds): array|Collection
+    {
+        return Trip::with(['buses:id,bus_name,trip_id', 'buses.seats' => function ($query) {
+            $query->where('is_booked', '=', 0);
+        }])
+            ->whereIn('id', array_unique($getAvailableTripsIds))
+            ->select(['id', 'name', 'start_station_id', 'end_station_id'])
+            ->get();
+    }
+
+    /**
+     * @param Collection|array $tripSeats
+     * @return array
+     */
+    public function getCustomizedSeatDataPreview(Collection|array $trips): array
+    {
+        $allAvailableSeats = [];
+//        dd($trips);
+        foreach ($trips as $trip){
+            foreach ($trip->buses as $bus) {
+                foreach ($bus->seats as $seat) {
+                    $allAvailableSeats [] = (object)[
+                        'trip_id' => $bus->trip_id,
+                        'seat_id' => $seat->id,
+                        'seat_number' => $seat->number,
+                        'bus_id' => $seat->bus_id
+                    ];
+                }
+            }
+        }
+
+        return $allAvailableSeats;
     }
 }
