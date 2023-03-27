@@ -22,6 +22,10 @@ class BusSeeder extends Seeder
                 'bus_name' => 'Bus 2',
                 'trip_id' => 2
             ],
+            [
+                'bus_name' => 'Bus 3',
+                'trip_id' => 3
+            ],
             // Add more buses here
         ];
 

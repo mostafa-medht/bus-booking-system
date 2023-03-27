@@ -14,22 +14,35 @@ class TripStationSeeder extends Seeder
      */
     public function run(): void
     {
-        // Get the Cairo to Asyut trip
-        $trip = Trip::where('start_station_id', 1)
-            ->where('end_station_id', 5)
-            ->first();
-
         // Define the stations for the trip
         $stations = [
-            ['station_id' => 2, 'stop_order' => 1],
-            ['station_id' => 3, 'stop_order' => 2],
-            ['station_id' => 4, 'stop_order' => 3],
+            ['station_id' => 1, 'stop_order' => 1],
+            ['station_id' => 2, 'stop_order' => 2],
+            ['station_id' => 3, 'stop_order' => 3],
+            ['station_id' => 4, 'stop_order' => 4],
+            ['station_id' => 5, 'stop_order' => 5],
         ];
 
         // Loop through each station and create a new TripStation record
         foreach ($stations as $station) {
             TripStation::create([
-                'trip_id' => $trip->id,
+                'trip_id' => 1,
+                'station_id' => $station['station_id'],
+                'stop_order' => $station['stop_order'],
+            ]);
+        }
+
+        // Define the stations for the trip
+        $stations = [
+            ['station_id' => 5, 'stop_order' => 1],
+            ['station_id' => 4, 'stop_order' => 2],
+            ['station_id' => 3, 'stop_order' => 3],
+            ['station_id' => 2, 'stop_order' => 4],
+        ];
+
+        foreach ($stations as $station) {
+            TripStation::create([
+                'trip_id' => 3,
                 'station_id' => $station['station_id'],
                 'stop_order' => $station['stop_order'],
             ]);

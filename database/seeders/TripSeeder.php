@@ -24,6 +24,11 @@ class TripSeeder extends Seeder
                 'start_station_id' => 1,
                 'end_station_id' => 3,
             ],
+            [
+                'name' => 'Assuit-Giza',
+                'start_station_id' => 5,
+                'end_station_id' => 2,
+            ],
             // Add more trips here
         ];
 

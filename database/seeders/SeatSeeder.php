@@ -108,6 +108,53 @@ class SeatSeeder extends Seeder
                 'number' => 12,
                 'bus_id' => 2,
             ],
+            [
+                'number' => 1,
+                'bus_id' => 3,
+            ],
+            [
+                'number' => 2,
+                'bus_id' => 3,
+            ],
+            [
+                'number' => 3,
+                'bus_id' => 3,
+            ],
+            [
+                'number' => 4,
+                'bus_id' => 3,
+            ],
+            [
+                'number' => 5,
+                'bus_id' => 3,
+            ],
+            [
+                'number' => 6,
+                'bus_id' => 3,
+            ],
+            [
+                'number' => 7,
+                'bus_id' => 3,
+            ],[
+                'number' => 8,
+                'bus_id' => 3,
+            ],
+            [
+                'number' => 9,
+                'bus_id' => 3,
+            ],
+            [
+                'number' => 10,
+                'bus_id' => 3,
+            ],
+            [
+                'number' => 11,
+                'bus_id' => 3,
+            ],
+            [
+                'number' => 12,
+                'bus_id' => 3,
+            ],
             // Add more seats here
         ];
 
