@@ -24,7 +24,8 @@ class GetAvailableSeatsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'trip_id' => 'required|integer|exists:trips,id',
+            'start_station_id' => 'required|integer|exists:stations,id',
+            'end_station_id' => 'required|integer|exists:stations,id',
         ];
     }
 
