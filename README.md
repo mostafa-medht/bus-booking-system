@@ -11,7 +11,7 @@ Each bus has 12 available seats that users can book.
 5. Apply error handling mechanism for every action.
 6. Apply SOLID principle for better clean architecture.
 7. Use services as design architecture for under the hood operation. 
-
+8. Use phpunit testing to test all added feature.
 ## Run the project
 
 1. Clone repository
