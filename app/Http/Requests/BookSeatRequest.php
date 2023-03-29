@@ -25,6 +25,7 @@ class BookSeatRequest extends FormRequest
     {
         return [
             'seat_id' => 'required|integer|exists:seats,id',
+            'trip_id' => 'required|integer|exists:trips,id'
         ];
     }
 

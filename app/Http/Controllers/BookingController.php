@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BookSeatRequest;
 use App\Http\Requests\GetAvailableSeatsRequest;
 use App\Services\BookingServices;
+use Illuminate\Contracts\Foundation\Application as ApplicationAlias;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Response;
 
 class BookingController extends Controller
@@ -17,14 +20,20 @@ class BookingController extends Controller
         $this->bookingServices = $bookingServices;
     }
 
-    public function getAvailableSeats(GetAvailableSeatsRequest $request)
+    /**
+     * @param GetAvailableSeatsRequest $request
+     * @return array
+     */
+    public function getAvailableSeats(GetAvailableSeatsRequest $request): array
     {
         return $this->bookingServices->getAvailableSeats($request->validated());
-
-        return response()->json(['seats' => $tripSeats]);
     }
 
-    public function bookSeat(BookSeatRequest $request)
+    /**
+     * @param BookSeatRequest $request
+     * @return Application|Response
+     */
+    public function bookSeat(BookSeatRequest $request): Application|Response
     {
         $bookSeat = $this->bookingServices->bookSeat($request->validated());
 

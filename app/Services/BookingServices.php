@@ -5,9 +5,11 @@ namespace App\Services;
 use App\Models\Seat;
 use App\Models\Trip;
 use App\Models\TripStation;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class BookingServices
@@ -44,6 +46,9 @@ class BookingServices
             return ['status' => false, 'message' => "Seat already booked"] ;
 
         try {
+
+            $this->createBookingSeatInfo($validatedData);
+
             $this->markBookedSeat($seat);
 
             Log::info("Book Seat: Seat with id {$seat->id} booked successfully.");
@@ -93,13 +98,13 @@ class BookingServices
     }
 
     /**
-     * @param Collection|array $tripSeats
+     * @param Collection|array $trips
      * @return array
      */
     public function getCustomizedSeatDataPreview(Collection|array $trips): array
     {
         $allAvailableSeats = [];
-//        dd($trips);
+
         foreach ($trips as $trip){
             foreach ($trip->buses as $bus) {
                 foreach ($bus->seats as $seat) {
@@ -114,5 +119,19 @@ class BookingServices
         }
 
         return $allAvailableSeats;
+    }
+
+    /**
+     * @param array $bookingData
+     * @return void
+     */
+    private function createBookingSeatInfo(array $bookingData): void
+    {
+        DB::table('bookings')->insert([
+            'seat_id'   => $bookingData['seat_id'],
+            'trip_id'   => $bookingData['trip_id'],
+            'user_id'   => Auth::id(),
+            'created_at' => Carbon::now()
+        ]);
     }
 }
